@@ -1,18 +1,27 @@
-// content of index.js
-const http = require('http')  
-const port = 3000
+var React = require('react');
+var ReactDOM = require('react-dom');
 
-const requestHandler = (request, response) => {  
-  console.log(request.url)
-  response.end('Hello Node.js Server!')
-}
+var Form = require('./form-component.js')
 
-const server = http.createServer(requestHandler)
+var GameBoard = React.createClass({
+	render: function(){
+		return (
+			<div className="gameBoard">
+			<h1>Spanish Level 1</h1>
+			<div className="container">
+				<div className="row">
+					<h3>Fiesta</h3>
+				</div>
+			</div>
+			<Form />
+			</div>
 
-server.listen(port, (err) => {  
-  if (err) {
-    return console.log('something bad happened', err)
-  }
+		)
+	}
+});
 
-  console.log(`server is listening on ${port}`)
-})
+document.addEventListener('DOMContentLoaded', function() {
+    ReactDOM.render(
+    	<GameBoard />,
+    	 document.getElementById('app'));
+});
