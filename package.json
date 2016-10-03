@@ -4,7 +4,7 @@
   "description": "Full Stack App",
   "main": "client/index.js",
   "scripts": {
-   "test": "mocha--compilers js:babel-register test/**/*.js*",
+    "test": "mocha--compilers js:babel-register test/**/*.js*",
     "mkdir": "mkdir -p build",
     "clean": "rm -rf build",
     "build": "npm run clean && npm run mkdir && npm run build:html && npm run build:js",
@@ -29,13 +29,14 @@
     "url": "https://github.com/yolixtly/space-repetition/issues"
   },
   "homepage": "https://github.com/yolixtly/space-repetition#readme",
- "dependencies": {
+  "dependencies": {
     "express": "^4.14.0",
     "isomorphic-fetch": "^2.2.1",
     "react": "^15.3.1",
     "react-addons-update": "^15.3.1",
     "react-dom": "^15.3.1",
     "react-redux": "^4.4.5",
+    "react-router": "^2.8.1",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0"
   },
