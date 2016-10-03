@@ -1,18 +1,19 @@
-// content of index.js
-const http = require('http')  
-const port = 3000
+var express = require('express');
+var app = express();
 
-const requestHandler = (request, response) => {  
-  console.log(request.url)
-  response.end('Hello Node.js Server!')
-}
 
-const server = http.createServer(requestHandler)
+app.get('/', function (req, res) {
+  res.send('Hello World!');
+});
 
-server.listen(port, (err) => {  
-  if (err) {
-    return console.log('something bad happened', err)
-  }
+app.get('/questions', function (req, res) {
+	res.send('hola');
+});
 
-  console.log(`server is listening on ${port}`)
-})
+app.get('/users', function (req, res) {
+	res.send('Yoli');
+});
+
+app.listen(3000, function () {
+  console.log('Example app listening on port 3000!');
+});

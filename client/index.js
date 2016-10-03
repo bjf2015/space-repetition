@@ -38,6 +38,10 @@ var LandingPage = React.createClass({
 });
 
 var GameBoard = React.createClass({
+	componentWillMount: function(){
+			//TODO: Test by passing a counter in the reducer
+			//Dispatch an action that simply changes the counterVal
+	},
 	render: function(){
 		return (
 			<div className="gameBoard-wrapper">
@@ -59,6 +63,15 @@ var GameBoard = React.createClass({
 	}
 });
 
+var mapStateToProps = function(state, props){
+	return {
+		wordToGuess : state.wordToGuess
+	};
+};
+
+var Container = connect(mapStateToProps)(GameBoard);
+
+
 var routes = (
     <Router history={hashHistory}>
         <Route path="/" component={LandingPage}>
@@ -68,18 +81,10 @@ var routes = (
     </Router>
 );
 
-var mapStateToProps = function(state, props){
-	return {
-		wordToGuess : state.wordToGuess
-	};
-};
-
-var Container = connect(mapStateToProps)(GameBoard);
-
 document.addEventListener('DOMContentLoaded', function() {
     ReactDOM.render(
-    	<Provider store={store}>
-    	<Container />
-    	</Provider>,
+	 <Provider store={store}>
+	    		<Container />
+	    	</Provider>,
     	 document.getElementById('app'));
 });
