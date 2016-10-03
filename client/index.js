@@ -15,6 +15,15 @@ app.get('/users', function (req, res) {
 	res.send('Yoli');
 });
 
+
+
+
+app.post('/question', function (req, res) {
+	res.writeHead(200, {
+		'Content-Type': 'text/plain'
+	});
+});
+
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
 });
