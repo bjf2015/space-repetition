@@ -7,33 +7,19 @@ var Route = router.Route;
 var hashHistory = router.hashHistory;
 var IndexRoute = router.IndexRoute;
 var Link = router.Link;
-var browserHistory = router.browserHistory;
 
-//external components 
-var Form = require('./form-component.js')
+//Redux --------------------------------
+var Provider = require('react-redux').Provider;
+var connect = require('react-redux').connect;
+var store = require('./store');
+var actions = require('./actions/actions');
 
-var GameBoard = React.createClass({
-	render: function(){
-		return (
-			<div className="gameBoard-wrapper">
-			<div className="logout-wrapper">
-			 <button type="button" className="btn btn-warning">Log out</button>
-			</div>
-			<h1>Spanish Level 1</h1>
-			<div className="container">
-				<div className="row">
-					<h3>Fiesta</h3>
-				</div>
-			</div>
-			<Form />
-			<div className="score-wrapper">
-				<h3>Score:<span>10</span></h3>
-			</div>
-			</div>
 
-		)
-	}
-});
+//external components ------------------
+var Form = require('./components/form-component.js');
+
+
+// Components --------------------------
 
 var LandingPage = React.createClass({
 	render: function(){
@@ -50,38 +36,50 @@ var LandingPage = React.createClass({
 		)
 	}
 });
-var App = function(props) {
-    return (
-        <div>
-            <h1>
-                Spanish Center
-            </h1>
-            <div>
-             <strong>
-                <Link to={'/landingPage'}>
-                    LandingPage
-                </Link>
-            </strong>    
-            </div>
-            <div>
-            <strong>
-                <Link to={'/gameBoard'}>
-                   GameBoard
-                </Link>
-            </strong>          
-            </div>
-        </div>
-    );
-};
-var routes = (
-    <Router history={browserHistory}>
-    	<Route path="/" component={LandingPage} />
-    </Router>
 
+var GameBoard = React.createClass({
+	render: function(){
+		return (
+			<div className="gameBoard-wrapper">
+			<div className="logout-wrapper">
+			 <button type="button" className="btn btn-warning">Log out</button>
+			</div>
+			<h1>Spanish Level 1</h1>
+			<div className="container">
+				<div className="row">
+					<h3>{this.props.wordToGuess}</h3>
+				</div>
+			</div>
+			<Form />
+			<div className="score-wrapper">
+				<h3>Score:<span>10</span></h3>
+			</div>
+			</div>
+		)
+	}
+});
+
+var routes = (
+    <Router history={hashHistory}>
+        <Route path="/" component={LandingPage}>
+        </Route>
+        <Route path="/gameBoard" component={GameBoard}>
+        </Route>
+    </Router>
 );
+
+var mapStateToProps = function(state, props){
+	return {
+		wordToGuess : state.wordToGuess
+	};
+};
+
+var Container = connect(mapStateToProps)(GameBoard);
 
 document.addEventListener('DOMContentLoaded', function() {
     ReactDOM.render(
-    	routes,
+    	<Provider store={store}>
+    	<Container />
+    	</Provider>,
     	 document.getElementById('app'));
 });
