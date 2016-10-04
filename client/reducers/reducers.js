@@ -1,7 +1,7 @@
 var actions = require('../actions/actions');
 
 var initialState = {
-	wordToGuess : "Hello from reducer"
+	wordToGuess : ""
 };
 
 var reducerCreator = function(state, action){
@@ -11,8 +11,11 @@ var reducerCreator = function(state, action){
 	if(action.type === actions.FETCH_WORD_SUCCESS){
 		console.log('fetch success');
 		//Update Variable for current Gam
-		console.log(action.data, 'checking if it loops');
+		// console.log(action.data, 'checking if it loops');
 		// change to react imm helupers, to just upadte the rigth properter
+		// var newState = update(initialState, {
+		// 	wordToGuess: { $set : action.data }
+		// });
 		return{
 			wordToGuess: action.data
 		};

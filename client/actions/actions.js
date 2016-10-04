@@ -29,7 +29,7 @@ var fetchWord = function(){
 		return response.json();
 	})
 	.then(function(items){
-		console.log('fetch items Promise: ', items);
+		// console.log('fetch items Promise: ', items);
 		return dispatch(
 			fetchWordSuccess(items)
 		);

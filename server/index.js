@@ -27,7 +27,7 @@ var Storage = {
 
 var createStorage = function() {
 	var storage = Object.create(Storage);
-	storage.items = [];
+	storage.items = ['nada'];
 	storage.setId = 1;
 	return storage;
 }
@@ -73,11 +73,11 @@ app.get('/questions', function(req, res) {
 			                            });
 		}
 		
-		// res.json(questions[counter].spanish);
-		res.json(questions);
+		res.json(questions[counter].spanish + counter); //counter is just for testing
+		// res.json(questions);
 		
 		counter++;
-		// console.log('counter value: ',counter);
+		console.log('counter value: ',counter);
 	});
 });
 
