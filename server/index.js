@@ -1,7 +1,14 @@
 var express = require('express');
 var bodyParser= require('body-parser');
 var app = express();
+var mongoose = require('mongoose');
 
+mongoose.connect('mongodb://localhost/test');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log('Mongoose connected to MongoDB');
+});
 
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -70,6 +77,22 @@ app.post('/question', function (req, res) {
 	res.end('Connection Closed\n\n');
 });
 
+// Retrieve
+var MongoClient = require('mongodb').MongoClient;
+
+// Connect to the db
+MongoClient.connect("mongodb://localhost:27017/exampleDb", function(err, db) {
+  if(err) { return console.dir(err); }
+
+  db.collection('test', function(err, collection) {});
+
+  db.collection('test', {w:1}, function(err, collection) {});
+
+  db.createCollection('test', function(err, collection) {});
+
+  db.createCollection('test', {w:1}, function(err, collection) {});
+
+});
 // app.get('/gamebaord', function (res, reg) { 
 // 	res.send(__dirname, '/index.js')
 // }) #TODO
