@@ -67,14 +67,15 @@ app.get('/', function (req, res) {
 app.get('/questions', function(req, res) {
 	Question.find(function(err, questions) {
 		if (err) {
-			return res.status(500).json({message: 'Internal Server Error'
-			                            });
+			return res.status(500).json(
+				{message: 'Internal Server Error'
+				});
 		}
 		res.json(questions);
 	});
 });
 
-app.get('/nextq')
+//app.get('/nextq')
 
 app.get('/users', function (req, res) {
 	res.send('Yoli\n');
