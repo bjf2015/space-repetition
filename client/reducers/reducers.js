@@ -1,7 +1,8 @@
 var actions = require('../actions/actions');
+var update = require('react-addons-update');
 
 var initialState = {
-	wordToGuess : ""
+	wordToGuess : "Hello from Reducer"
 };
 
 var reducerCreator = function(state, action){
@@ -9,18 +10,19 @@ var reducerCreator = function(state, action){
 
 
 	if(action.type === actions.FETCH_WORD_SUCCESS){
-		console.log('fetch success');
-		//Update Variable for current Gam
-		// console.log(action.data, 'checking if it loops');
-		// change to react imm helupers, to just upadte the rigth properter
-		// var newState = update(initialState, {
-		// 	wordToGuess: { $set : action.data }
-		// });
-		return{
-			wordToGuess: action.data
-		};
-	// } else if(action.type === actions.FETCH_WORD_ERROR){
-	// 	console.log(action.error);
+		// console.log('fetch success');
+		// console.log('current word:', action.data);
+
+		var newState = update(initialState, {
+		 	wordToGuess : {$set : action.data } 
+		 });
+
+		// console.log('newState:', newState);
+		return newState;
+
+
+	} else if(action.type === actions.FETCH_WORD_ERROR){
+		// console.log('error: ', action.error);
 	}
 
 	return state;
