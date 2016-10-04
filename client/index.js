@@ -7,7 +7,10 @@ var Route = router.Route;
 var hashHistory = router.hashHistory;
 var IndexRoute = router.IndexRoute;
 var Link = router.Link;
-
+var ReactRouterRedux = require('react-router-redux');
+var routerReducer = ReactRouterRedux.routerReducer;
+var syncHistoryWithStore = ReactRouterRedux.routerReducer;
+var browserHistory = router.browserHistory;
 //Redux --------------------------------
 var Provider = require('react-redux').Provider;
 var connect = require('react-redux').connect;
@@ -43,6 +46,7 @@ var GameBoard = React.createClass({
 			//Dispatch an action that simply changes the counterVal
 	},
 	render: function(){
+		console.log(this.props);
 		return (
 			<div className="gameBoard-wrapper">
 			<div className="logout-wrapper">
@@ -51,7 +55,8 @@ var GameBoard = React.createClass({
 			<h1>Spanish Level 1</h1>
 			<div className="container">
 				<div className="row">
-					<h3>{this.props.wordToGuess}</h3>
+
+					<h3>Here the prop:{this.props.wordToGuess}</h3>
 				</div>
 			</div>
 			<Form />
@@ -64,6 +69,7 @@ var GameBoard = React.createClass({
 });
 
 var mapStateToProps = function(state, props){
+	console.log('showing inside of mapStateToProps! ');
 	return {
 		wordToGuess : state.wordToGuess
 	};
@@ -71,6 +77,8 @@ var mapStateToProps = function(state, props){
 
 var Container = connect(mapStateToProps)(GameBoard);
 
+// Create an enhanced history that syncs navigation events with the store
+// var history = syncHistoryWithStore(hashHistory, store)
 
 var routes = (
     <Router history={hashHistory}>
@@ -83,8 +91,8 @@ var routes = (
 
 document.addEventListener('DOMContentLoaded', function() {
     ReactDOM.render(
-	 <Provider store={store}>
-	    		<Container />
-	    	</Provider>,
-    	 document.getElementById('app'));
+			<Provider store={store}>
+		    	<Container />
+	  		</Provider>,
+    	document.getElementById('app'));
 });
