@@ -1,14 +1,17 @@
 var express = require('express');
 var bodyParser= require('body-parser');
-var app = express();
 var mongoose = require('mongoose');
+var config = require('./config');
+var Question = require('./models/Question');
+var app = express();
 
-// mongoose.connect('mongodb://localhost/test');
-// var db = mongoose.connection;
-// db.on('error', console.error.bind(console, 'connection error:'));
-// db.once('open', function() {
-// 	console.log('Mongoose connected to MongoDB');
+// Question.create({spanish: 'fiesta' }, function(err, question) {
+	// console.log(question);
 // });
+Question.find({}, function(error, questions) {
+	console.log(questions);
+});
+
 
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -44,7 +47,7 @@ storage.add('Tonto', 'Silly');
 var app = express();
 app.use('/', express.static('build'));
 
-app.get('/items/:word', function(request, response) {
+app.get('/items/', function(request, response) {
 	response.json(storage.items);
 });
 
@@ -61,9 +64,17 @@ app.get('/', function (req, res) {
 	res.send('Hello World!\n');
 });
 
-app.get('/questions', function (req, res) {
-	res.send('hola\n');
+app.get('/questions', function(req, res) {
+	Question.find(function(err, questions) {
+		if (err) {
+			return res.status(500).json({message: 'Internal Server Error'
+			                            });
+		}
+		res.json(questions);
+	});
 });
+
+app.get('/nextq')
 
 app.get('/users', function (req, res) {
 	res.send('Yoli\n');
@@ -77,82 +88,35 @@ app.post('/question', function (req, res) {
 	res.end('Connection Closed\n\n');
 });
 
-// Retrieve
-var MongoClient = require('mongodb').MongoClient;
-
-// Connect to the db
-MongoClient.connect('mongodb://localhost/snippets', function(err, db) {
-	if (err) {
-		console.error(err);
-		db.close();
-		return;
-	}
-	
-	var collection = db.collection('snippets');
-	
-	var create = function(name, content) {
-		db.close();
-	};
-	
-	var read = function(name) {
-		db.close();
-	};
-	
-	var update = function(name, content) {
-		db.close();
-	};
-	
-	var del = function(name, content) {
-		db.close();
-	};
-	
-	var main = function() {
-		if (process.argv[2] == 'create') {
-			create(process.argv[3], process.argv[4]);
-		}
-		else if (process.argv[2] == 'read') {
-			read(process.argv[3]);
-		}
-		else if (process.argv[2] == 'update') {
-			update(process.argv[3], process.argv[4]);
-		}
-		else if (process.argv[2] == 'delete') {
-			del(process.argv[3]);
-		}
-		else {
-			console.error('Command not recognized');
-			db.close();
-		}
-	};
-	
-	main();
-});
-
-var create = function(name, content) {
-	var snippet = {
-		name: name,
-		content: content
-	};
-	collection.insert(snippet, function(err, result) {
-		if (err) {
-			console.error("Could not create snippet", name);
-			db.close();
-			return;
-		}
-		console.log("Created snippet", name);
-		db.close();
-	});
-};
-
-
 // app.get('/gamebaord', function (res, reg) {
 // 	res.send(__dirname, '/index.js')
 // }) #TODO
 
-app.listen(3000, function () {
-	console.log('Example app listening on port 3000!');
-});
+var runServer = function(callback) {
+	mongoose.connect(config.DATABASE_URL, function(err) {
+		if (err && callback) {
+			return callback(err);
+		}
+		
+		app.listen(config.PORT, function() {
+			console.log('Listening on localhost:' + config.PORT);
+			if (callback) {
+				callback();
+			}
+		});
+	});
+};
 
+if (require.main === module) {
+	runServer(function(err) {
+		if (err) {
+			console.error(err);
+		}
+	});
+};
+
+exports.app = app;
+exports.runServer = runServer;
 
 /*
  google Auth - login button (APi)
