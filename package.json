@@ -2,7 +2,7 @@
   "name": "space-repetition",
   "version": "1.0.0",
   "description": "Full Stack App",
-  "main": "server/index.js",
+  "main": "client/index.js",
   "scripts": {
     "test": "mocha--compilers js:babel-register test/**/*.js*",
     "mkdir": "mkdir -p build",
@@ -30,15 +30,15 @@
   },
   "homepage": "https://github.com/yolixtly/space-repetition#readme",
   "dependencies": {
-    "acorn": "^4.0.3",
+    "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "isomorphic-fetch": "^2.2.1",
-    "mongodb": "^2.2.10",
-    "mongoose": "^4.6.2",
     "react": "^15.3.1",
     "react-addons-update": "^15.3.1",
     "react-dom": "^15.3.1",
     "react-redux": "^4.4.5",
+    "react-router": "^2.8.1",
+    "react-router-redux": "^4.0.6",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0"
   },
