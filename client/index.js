@@ -42,8 +42,13 @@ var LandingPage = React.createClass({
 
 var GameBoard = React.createClass({
 	componentWillMount: function(){
-			//TODO: Test by passing a counter in the reducer
-			//Dispatch an action that simply changes the counterVal
+		//TODO: Test by passing a counter in the reducer
+		//Dispatch an action that simply changes the counterVal
+		console.log('componentWillMount')
+		this.props.dispatch(actions.fetchWord());	
+	},
+	onFormSubmit(guessWord){
+		this.props.dispatch(actions.fetchWord(guessWord));
 	},
 	render: function(){
 		console.log(this.props);
@@ -56,10 +61,10 @@ var GameBoard = React.createClass({
 			<div className="container">
 				<div className="row">
 
-					<h3>Here the prop:{this.props.wordToGuess}</h3>
+					<h3>{this.props.wordToGuessNext}</h3>
 				</div>
 			</div>
-			<Form />
+			<Form onFormSubmit={this.onFormSubmit}/>
 			<div className="score-wrapper">
 				<h3>Score:<span>10</span></h3>
 			</div>
@@ -69,9 +74,9 @@ var GameBoard = React.createClass({
 });
 
 var mapStateToProps = function(state, props){
-	console.log('showing inside of mapStateToProps! ');
+	// console.log('showing inside of mapStateToProps! ');
 	return {
-		wordToGuess : state.wordToGuess
+		wordToGuessNext : state.wordToGuess
 	};
 };
 

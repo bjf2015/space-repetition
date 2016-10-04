@@ -60,9 +60,9 @@ app.post('/items', bodyParser, function(request, response) {
 	response.status(201).json(item);
 });
 
-app.get('/', function (req, res) {
-	res.send('Hello World!\n');
-});
+// app.get('/', function (req, res) {
+// 	res.send('Hello World!\n');
+// });
 
 app.get('/questions', function(req, res) {
 	Question.find(function(err, questions) {
