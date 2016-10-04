@@ -5,9 +5,10 @@ var config = require('./config');
 var Question = require('./models/Question');
 var app = express();
 
-// Question.create({spanish: 'fiesta' }, function(err, question) {
-	// console.log(question);
+// Question.create({spanish: 'amigo', english: 'friend' }, function(err, question) {
+// 	console.log(question);
 // });
+
 Question.find({}, function(error, questions) {
 	console.log(questions);
 });
@@ -64,17 +65,73 @@ app.post('/items', bodyParser, function(request, response) {
 // 	res.send('Hello World!\n');
 // });
 
+var counter = 0;
 app.get('/questions', function(req, res) {
 	Question.find(function(err, questions) {
 		if (err) {
 			return res.status(500).json({message: 'Internal Server Error'
 			                            });
 		}
+		
+		// res.json(questions[counter].spanish);
 		res.json(questions);
+		
+		counter++;
+		// console.log('counter value: ',counter);
 	});
 });
 
-app.get('/nextq')
+app.put('/questions/:id', bodyParser.json(), function(req, res){
+		console.log(req.body.english );
+	// fod find , get the right andster
+	Question.findOne({_id: req.params.id}, function(err, question){
+		//(question);
+		var newBucket;
+		if(req.body.english === question.english){
+			newBucket = "c";
+		} else {
+			newBucket = "a";
+		}
+		   Question.findOneAndUpdate({_id: req.params.id}, 
+		   	{bucket: newBucket}, function(err, q) {
+		  				res.json({ question: q});
+		       
+		       
+		   });
+	});	
+
+	// Question.findOneAndUpdate({ _id: req.params.id }, function (err, question){
+	// 	console.log('find one?');
+	//   question.bucket = 'c';
+	//   //question.visits.$inc();
+	//   question.save();
+	//   res.json({message: 'hey'});
+	// });
+		// Question.update(
+		// 	{_id: req.params.id},
+		// 	{bucket: 'c'}
+		// 	,{},
+		// 	function(err, question){
+		// 		// add error handling
+		// 		console.log('it saved: ', question);
+		// 		res.json({question: question}); // next question?
+		// })
+
+
+	// Question.find(function(err, questions){	
+	// 	if (err) {
+	// 		return res.status(500).json({message: 'Internal Server Error'
+	// 		                            });
+	// 	}
+	// 	if(Question[counter].english == req.params.answer){
+	// 		res.json('Good Job!');
+	// 	} else {
+	// 		res.json('Keep trying!');
+	// 	}
+	// });
+});
+
+// app.get('/nextq')
 
 app.get('/users', function (req, res) {
 	res.send('Yoli\n');

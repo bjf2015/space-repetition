@@ -18,7 +18,7 @@ var fetchWordError = function(error){
 
 var fetchWord = function(){
 	return function(dispatch){
-		var url ="http://localhost:3000/items/";
+		var url ="http://localhost:3000/questions/";
 
 	return fetch(url).then(function(response){
 		if(response.status < 200 || response.status >= 300){
