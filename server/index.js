@@ -2,8 +2,15 @@ var express = require('express');
 var bodyParser= require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./config');
+var Question = require('./models/Question');
 var app = express();
 
+// Question.create({spanish: 'fiesta' }, function(err, question) {
+	// console.log(question);
+// });
+Question.find({}, function(error, questions) {
+	console.log(questions);
+});
 
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -57,9 +64,17 @@ app.get('/', function (req, res) {
 	res.send('Hello World!\n');
 });
 
-app.get('/questions', function (req, res) {
-	res.send('hola\n');
+app.get('/questions', function(req, res) {
+	Question.find(function(err, questions) {
+		if (err) {
+			return res.status(500).json({message: 'Internal Server Error'
+			                            });
+		}
+		res.json(questions);
+	});
 });
+
+app.get('/nextq')
 
 app.get('/users', function (req, res) {
 	res.send('Yoli\n');
