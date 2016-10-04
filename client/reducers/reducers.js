@@ -1,7 +1,7 @@
 var actions = require('../actions/actions');
 
 var initialState = {
-	wordToGuess :" hello from reducer"
+	wordToGuess :"hello from reducer"
 };
 
 var reducerCreator = function(state, action){
