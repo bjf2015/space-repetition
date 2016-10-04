@@ -42,9 +42,9 @@ storage.add('Pollo', 'Chicken');
 storage.add('Tonto', 'Silly');
 
 var app = express();
-app.use(express.static('public'));
+app.use('/', express.static('build'));
 
-app.get('/items/:word', function(request, response) {
+app.get('/items/', function(request, response) {
 	response.json(storage.items);
 });
 
@@ -57,9 +57,9 @@ app.post('/items', bodyParser, function(request, response) {
 	response.status(201).json(item);
 });
 
-app.get('/', function (req, res) {
-	res.send('Hello World!\n');
-});
+// app.get('/', function (req, res) {
+// 	res.send('Hello World!\n');
+// });
 
 app.get('/questions', function (req, res) {
 	res.send('hola\n');

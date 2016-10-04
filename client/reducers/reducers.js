@@ -1,29 +1,23 @@
 var actions = require('../actions/actions');
 
 var initialState = {
-	wordToGuess : []
+	wordToGuess :" hello from reducer"
 };
 
 var reducerCreator = function(state, action){
 	state = state || initialState;
 
-	var currentGame = {
-		score: 0,
-		feedback: null,
-		currentWord: 0
-	}
 
 	if(action.type === actions.FETCH_WORD_SUCCESS){
-		//Update Variable for current Game
-		var index = currentGame.currentWord; // 0
-		var spanishWord = action.data.items[index].spanish;
-		currentGame.currentWord += 1;
-
+		console.log('fetch success');
+		//Update Variable for current Gam
+		console.log(action.data[0].spanish, 'data arrives to reducer');
+		// change to react imm helupers, to just upadte the rigth properter
 		return{
-			wordToGuess: spanishWord
+			wordToGuess: action.data[0].spanish
 		};
-	} else if(action.type === actions.FETCH_WORD_ERROR){
-		console.log(action.error);
+	// } else if(action.type === actions.FETCH_WORD_ERROR){
+	// 	console.log(action.error);
 	}
 
 	return state;
