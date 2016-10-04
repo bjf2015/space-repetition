@@ -3,12 +3,12 @@ var bodyParser= require('body-parser');
 var app = express();
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/test');
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-	console.log('Mongoose connected to MongoDB');
-});
+// mongoose.connect('mongodb://localhost/test');
+// var db = mongoose.connection;
+// db.on('error', console.error.bind(console, 'connection error:'));
+// db.once('open', function() {
+// 	console.log('Mongoose connected to MongoDB');
+// });
 
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -42,7 +42,7 @@ storage.add('Pollo', 'Chicken');
 storage.add('Tonto', 'Silly');
 
 var app = express();
-app.use(express.static('public'));
+app.use('/', express.static('build'));
 
 app.get('/items/:word', function(request, response) {
 	response.json(storage.items);
