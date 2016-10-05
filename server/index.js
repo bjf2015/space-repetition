@@ -87,10 +87,25 @@ app.put('/questions/:id', bodyParser.json(), function(req, res){
 	Question.findOne({_id: req.params.id}, function(err, question){
 		//(question);
 		var newBucket;
-		if(req.body.english === question.english){
+		if(req.body.english === question.english && newBucket === 'z') {
 			newBucket = "c";
 		} else {
 			newBucket = "a";
+		}
+		if(req.body.english === question.english && newBucket === 'a') {
+			newBucket = "b";
+		} else {
+			newBucket = "a";
+		}
+		if(req.body.english === question.english && newBucket === 'b') {
+			newBucket = "c";
+		} else {
+			newBucket = "a";
+		}
+		if(req.body.english === question.english && newBucket === 'c') {
+			newBucket = "c";
+		} else {
+			newBucket = "b";
 		}
 		   Question.findOneAndUpdate({_id: req.params.id}, 
 		   	{bucket: newBucket}, function(err, q) {
