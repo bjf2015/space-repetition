@@ -72,8 +72,12 @@ app.get('/questions', function(req, res) {
 			return res.status(500).json({message: 'Internal Server Error'
 			                            });
 		}
-		
-		res.json(questions[counter].spanish + counter); //counter is just for testing
+		var spanishWord = questions[counter].spanish + counter;
+		var id = questions[counter]._id;
+		res.json({
+			question : spanishWord,
+			id : id 
+		}); //counter is just for testing
 		// res.json(questions);
 		
 		counter++;
@@ -100,35 +104,6 @@ app.put('/questions/:id', bodyParser.json(), function(req, res){
 		   });
 	});	
 
-	// Question.findOneAndUpdate({ _id: req.params.id }, function (err, question){
-	// 	console.log('find one?');
-	//   question.bucket = 'c';
-	//   //question.visits.$inc();
-	//   question.save();
-	//   res.json({message: 'hey'});
-	// });
-		// Question.update(
-		// 	{_id: req.params.id},
-		// 	{bucket: 'c'}
-		// 	,{},
-		// 	function(err, question){
-		// 		// add error handling
-		// 		console.log('it saved: ', question);
-		// 		res.json({question: question}); // next question?
-		// })
-
-
-	// Question.find(function(err, questions){	
-	// 	if (err) {
-	// 		return res.status(500).json({message: 'Internal Server Error'
-	// 		                            });
-	// 	}
-	// 	if(Question[counter].english == req.params.answer){
-	// 		res.json('Good Job!');
-	// 	} else {
-	// 		res.json('Keep trying!');
-	// 	}
-	// });
 });
 
 // app.get('/nextq')

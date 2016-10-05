@@ -2,7 +2,8 @@ var actions = require('../actions/actions');
 var update = require('react-addons-update');
 
 var initialState = {
-	wordToGuess : "Hello from Reducer"
+	wordToGuess : "Hello from Reducer",
+	id : null
 };
 
 var reducerCreator = function(state, action){
@@ -14,11 +15,13 @@ var reducerCreator = function(state, action){
 		// console.log('current word:', action.data);
 
 		var newState = update(initialState, {
-		 	wordToGuess : {$set : action.data } 
+		 	wordToGuess : {$set : action.data.question}	
+		 	 
 		 });
-
+		// console.log(action);
 		// console.log('newState:', newState);
 		return newState;
+		// return 'testing it!';
 
 
 	} else if(action.type === actions.FETCH_WORD_ERROR){
