@@ -4,6 +4,13 @@ var mongoose = require('mongoose');
 var config = require('./config');
 var Question = require('./models/Question');
 var app = express();
+var passport = require('passport');
+
+var GoogleStrategy = require('passport-google-oauth20').Strategy;
+var BearerStrategy = require('passport-http-bearer').Strategy;
+
+/*Google Strategy*/
+
 
 // Question.create({spanish: 'amigo', english: 'friend' }, function(err, question) {
 // 	console.log(question);
@@ -146,6 +153,73 @@ if (require.main === module) {
 		}
 	});
 };
+
+/*Google Strategy*/
+
+//STEP 1
+app.get('/public', function(req, res){
+	res.json({
+		message: 'google strategy'
+	})
+})
+
+
+//STEP 2
+passport.use(new GoogleStrategy({
+    clientID: "194268723918-d6l5f777ulrhkisikenk6oj73ilhen8i.apps.googleusercontent.com",
+    clientSecret: "i1WcRbasimAwIr8ZGpz4r6u8",
+    callbackURL: "http://localhost:3000/auth/google/callback"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+  	console.log('=========', accessToken, profile);
+      //do mongo stuff here : 
+      var user = {
+      	googleId: profile.id,
+      	accessToken: accessToken,
+      	displaName: profile.displayName,
+      	name: profile.name
+      }
+      return cb(null, user);
+
+    // User.findOrCreate({ googleId: profile.id }, function (err, user) {
+    //   return cb(err, user);
+    // });
+  }
+));
+
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile'] }));
+
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/login', session: false }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.cookie('accessToken', req.user.accessToken, {expires:0, httpOnly: true });
+    res.redirect('/'); //back to GameBoard 
+  });
+
+
+//STEP 3: Use BearerStrategy 
+/*
+this is separate from above. we need to tight them together
+we need to match the endpoints or 
+*/
+passport.use(new BearerStrategy(
+  function(token, done) {
+  	if(token == 12345){
+  		var user = {user: 'yoli'};
+  		return done(null, user, {scope: 'read'});
+  	} else {
+  		return done(null, false);
+  	}
+  }
+));
+
+app.get('/profile', 
+  passport.authenticate('bearer', { session: false }),
+  function(req, res) {
+    res.json(req.user);
+ });
 
 exports.app = app;
 exports.runServer = runServer;
