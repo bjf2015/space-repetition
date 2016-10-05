@@ -20,35 +20,26 @@ var actions = require('./actions/actions');
 
 //external components ------------------
 var Form = require('./components/form-component.js');
-
+var LandingPage = require('./components/landing-page-component.js');
 
 // Components --------------------------
 
-var LandingPage = React.createClass({
-	render: function(){
-		return (
-		<div className="landingPage-wrapper container">
-			<div className="intro-wrapper col-xs-6 col-xs-offset-3">
-				<h3>Spanish Center</h3>
-				<p>This online spanish Center, offers space repetition technique to learn new words in Spanish. Log in to start Playing!</p>
-			</div>
-			<div className="login-wrapper col-xs-6 col-xs-offset-3">
-				<button type="button" className="btn btn-warning">Login</button>
-			</div>
-		</div>
-		)
-	}
-});
-
 var GameBoard = React.createClass({
 	componentWillMount: function(){
-			//TODO: Test by passing a counter in the reducer
-			//Dispatch an action that simply changes the counterVal
+		//TODO: Test by passing a counter in the reducer
+		//Dispatch an action that simply changes the counterVal
+		console.log('componentWillMount')
+		this.props.dispatch(actions.fetchWord());	
+	},
+	onFormSubmit(guessWord){
+		this.props.dispatch(actions.fetchWord(guessWord));
 	},
 	render: function(){
+		console.log('access token', document.cookie );
 		console.log(this.props);
-		return (
+		return ( 
 			<div className="gameBoard-wrapper">
+			<div>{document.cookie == '' ? <LandingPage /> : 'we are logged in'}</div>
 			<div className="logout-wrapper">
 			 <button type="button" className="btn btn-warning">Log out</button>
 			</div>
@@ -56,10 +47,10 @@ var GameBoard = React.createClass({
 			<div className="container">
 				<div className="row">
 
-					<h3>Here the prop:{this.props.wordToGuess}</h3>
+					<h3>{this.props.wordToGuessNext}</h3>
 				</div>
 			</div>
-			<Form />
+			<Form onFormSubmit={this.onFormSubmit}/>
 			<div className="score-wrapper">
 				<h3>Score:<span>10</span></h3>
 			</div>
@@ -68,31 +59,59 @@ var GameBoard = React.createClass({
 	}
 });
 
+// var GameBoardContainer = connect()(GameBoard);
+// var App = React.createClass({
+// 	render: function(){
+// 		return (
+// 			<div>{document.cookie == '' ? <LandingPage /> : <GameBoard/>}</div>
+// 		)
+// 	}
+// });
+// var App = React.createClass({
+// 	componentWillMount: function(){
+// 		//TODO: Test by passing a counter in the reducer
+// 		//Dispatch an action that simply changes the counterVal
+// 		console.log('componentWillMount')
+// 		this.props.dispatch(actions.fetchWord());	
+// 	},
+// 	onFormSubmit(guessWord){
+// 		this.props.dispatch(actions.fetchWord(guessWord));
+// 	},
+// 	render: function({
+// 		return (
+// 			{ document.cookie == '' ? <LandingPage /> : <GameBoardContainer/> };
+// 		);
+// 	});
+// })
+
 var mapStateToProps = function(state, props){
-	console.log('showing inside of mapStateToProps! ');
+	// console.log('showing inside of mapStateToProps! ');
 	return {
-		wordToGuess : state.wordToGuess
+		wordToGuessNext : state.wordToGuess
 	};
 };
 
 var Container = connect(mapStateToProps)(GameBoard);
+// var Container = connect(mapStateToProps)(App);
+
 
 // Create an enhanced history that syncs navigation events with the store
 // var history = syncHistoryWithStore(hashHistory, store)
 
-var routes = (
-    <Router history={hashHistory}>
-        <Route path="/" component={LandingPage}>
-        </Route>
-        <Route path="/gameBoard" component={GameBoard}>
-        </Route>
-    </Router>
-);
+// var routes = (
+//     <Router history={hashHistory}>
+//         <Route path="/" component={LandingPage}>
+//         </Route>
+//         <Route path="/gameBoard" component={GameBoard}>
+//         </Route>
+//     </Router>
+// );
 
 document.addEventListener('DOMContentLoaded', function() {
     ReactDOM.render(
 			<Provider store={store}>
 		    	<Container />
+
 	  		</Provider>,
     	document.getElementById('app'));
 });
