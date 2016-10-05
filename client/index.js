@@ -20,25 +20,9 @@ var actions = require('./actions/actions');
 
 //external components ------------------
 var Form = require('./components/form-component.js');
-
+var LandingPage = require('./components/landing-page-component.js');
 
 // Components --------------------------
-
-var LandingPage = React.createClass({
-	render: function(){
-		return (
-		<div className="landingPage-wrapper container">
-			<div className="intro-wrapper col-xs-6 col-xs-offset-3">
-				<h3>Spanish Center</h3>
-				<p>This online spanish Center, offers space repetition technique to learn new words in Spanish. Log in to start Playing!</p>
-			</div>
-			<div className="login-wrapper col-xs-6 col-xs-offset-3">
-				<button type="button" className="btn btn-warning">Login</button>
-			</div>
-		</div>
-		)
-	}
-});
 
 var GameBoard = React.createClass({
 	componentWillMount: function(){
@@ -75,6 +59,7 @@ var GameBoard = React.createClass({
 	}
 });
 
+// var GameBoardContainer = connect()(GameBoard);
 // var App = React.createClass({
 // 	render: function(){
 // 		return (
@@ -94,7 +79,7 @@ var GameBoard = React.createClass({
 // 	},
 // 	render: function({
 // 		return (
-// 			{ document.cookie == '' ? <LandingPage /> : <GameBoard onFormSubmit={this.onFormSubmit} wordToGuessNext={this.props.wordToGuessNext} /> };
+// 			{ document.cookie == '' ? <LandingPage /> : <GameBoardContainer/> };
 // 		);
 // 	});
 // })

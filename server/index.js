@@ -155,96 +155,96 @@ if (require.main === module) {
 	});
 };
 
-/*Google Strategy*/
+// /*Google Strategy*/
 
-//STEP 1
-app.get('/public', function(req, res){
-	res.json({
-		message: 'google strategy'
-	})
-})
+// //STEP 1
+// app.get('/public', function(req, res){
+// 	res.json({
+// 		message: 'google strategy'
+// 	})
+// })
 
-//STEP 3: Use BearerStrategy 
-/*
-this is separate from above. we need to tight them together
-we need to match the endpoints or 
-Verify with google only once 
-*/
-passport.serializeUser(function(user, done){
-	done(null, user);
-});
-
-// passport.deserializeUser(function(user,done){
+// //STEP 3: Use BearerStrategy 
+// /*
+// this is separate from above. we need to tight them together
+// we need to match the endpoints or 
+// Verify with google only once 
+// */
+// passport.serializeUser(function(user, done){
 // 	done(null, user);
 // });
 
-passport.use(new BearerStrategy(
-  function(token, done) {
-  	User.findOne({ accessToken: token},
-  		function(err, user){
-  			if(err){
-  				return done(err)
-  			}
-  			if(!user) {
-  				return done(null, false);
-  			}
-  			return done(null, user, { scope: ['https://www.googleapis.com/auth/plus.login']});
-  		});
-  	// if(token == 12345){
-  	// 	var user = {user: 'Bryan'};
-  	// 	return done(null, user, {scope: 'read'});
-  	// } else {
-  	// 	return done(null, false);
-  	// }
-  }
-));
+// // passport.deserializeUser(function(user,done){
+// // 	done(null, user);
+// // });
 
-//STEP 2
-passport.use(new GoogleStrategy({
-    clientID: "194268723918-d6l5f777ulrhkisikenk6oj73ilhen8i.apps.googleusercontent.com",
-    clientSecret: "i1WcRbasimAwIr8ZGpz4r6u8",
-    callbackURL: "http://localhost:3000/auth/google/callback"
-  },
-  function(accessToken, refreshToken, profile, done) {
-  	console.log('=========', accessToken, profile);
-     // do mongo stuff here : 
-      User.findOneAndUpdate({
-      		googleId: profile.id,
-      		displayName: profile.displayName,
-      		accessToken: accessToken
-       }, 
-      	{
-      		upsert: true,
-      		new: true,
-      		setDefaultOnInsert: true
-      	}, function(err, user){
-      		if(err){
-      			console.log('error: ', err);
-      		} else {
-      			console.log('user:', user);
-      			return done(user);
-      		}
-      	});
-  })
-);
+// passport.use(new BearerStrategy(
+//   function(token, done) {
+//   	User.findOne({ accessToken: token},
+//   		function(err, user){
+//   			if(err){
+//   				return done(err)
+//   			}
+//   			if(!user) {
+//   				return done(null, false);
+//   			}
+//   			return done(null, user, { scope: ['https://www.googleapis.com/auth/plus.login']});
+//   		});
+//   	// if(token == 12345){
+//   	// 	var user = {user: 'Bryan'};
+//   	// 	return done(null, user, {scope: 'read'});
+//   	// } else {
+//   	// 	return done(null, false);
+//   	// }
+//   }
+// ));
 
-// we call this endopoint in frontend action with our login button
-app.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile'] }));
+// //STEP 2
+// passport.use(new GoogleStrategy({
+//     clientID: "194268723918-d6l5f777ulrhkisikenk6oj73ilhen8i.apps.googleusercontent.com",
+//     clientSecret: "i1WcRbasimAwIr8ZGpz4r6u8",
+//     callbackURL: "http://localhost:3000/auth/google/callback"
+//   },
+//   function(accessToken, refreshToken, profile, done) {
+//   	console.log('=========', accessToken, profile);
+//      // do mongo stuff here : 
+//       User.findOneAndUpdate({
+//       		googleId: profile.id,
+//       		displayName: profile.displayName,
+//       		accessToken: accessToken
+//        }, 
+//       	{
+//       		upsert: true,
+//       		new: true,
+//       		setDefaultOnInsert: true
+//       	}, function(err, user){
+//       		if(err){
+//       			console.log('error: ', err);
+//       		} else {
+//       			console.log('user:', user);
+//       			return done(user);
+//       		}
+//       	});
+//   })
+// );
 
-app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login', session: false }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.cookie('accessToken', req.user.accessToken, {expires:0, httpOnly: true });
-    res.redirect('/'); //back to GameBoard 
-  });
+// // we call this endopoint in frontend action with our login button
+// app.get('/auth/google',
+//   passport.authenticate('google', { scope: ['profile'] }));
 
-app.get('/profile', 
-  passport.authenticate('bearer', { session: false }),
-  function(req, res) {
-    res.json(req.user);
- });
+// app.get('/auth/google/callback', 
+//   passport.authenticate('google', { failureRedirect: '/login', session: false }),
+//   function(req, res) {
+//     // Successful authentication, redirect home.
+//     res.cookie('accessToken', req.user.accessToken, {expires:0, httpOnly: true });
+//     res.redirect('/'); //back to GameBoard 
+//   });
+
+// app.get('/profile', 
+//   passport.authenticate('bearer', { session: false }),
+//   function(req, res) {
+//     res.json(req.user);
+//  });
 
 exports.app = app;
 exports.runServer = runServer;
