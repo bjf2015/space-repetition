@@ -5,6 +5,7 @@ var config = require('./config');
 var Question = require('./models/Question');
 var app = express();
 var passport = require('passport');
+var User = require('./models/Users');
 
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 var BearerStrategy = require('passport-http-bearer').Strategy;
@@ -163,6 +164,40 @@ app.get('/public', function(req, res){
 	})
 })
 
+//STEP 3: Use BearerStrategy 
+/*
+this is separate from above. we need to tight them together
+we need to match the endpoints or 
+Verify with google only once 
+*/
+passport.serializeUser(function(user, done){
+	done(null, user);
+});
+
+// passport.deserializeUser(function(user,done){
+// 	done(null, user);
+// });
+
+passport.use(new BearerStrategy(
+  function(token, done) {
+  	User.findOne({ accessToken: token},
+  		function(err, user){
+  			if(err){
+  				return done(err)
+  			}
+  			if(!user) {
+  				return done(null, false);
+  			}
+  			return done(null, user, { scope: ['https://www.googleapis.com/auth/plus.login']});
+  		});
+  	// if(token == 12345){
+  	// 	var user = {user: 'Bryan'};
+  	// 	return done(null, user, {scope: 'read'});
+  	// } else {
+  	// 	return done(null, false);
+  	// }
+  }
+));
 
 //STEP 2
 passport.use(new GoogleStrategy({
@@ -170,23 +205,30 @@ passport.use(new GoogleStrategy({
     clientSecret: "i1WcRbasimAwIr8ZGpz4r6u8",
     callbackURL: "http://localhost:3000/auth/google/callback"
   },
-  function(accessToken, refreshToken, profile, cb) {
+  function(accessToken, refreshToken, profile, done) {
   	console.log('=========', accessToken, profile);
-      //do mongo stuff here : 
-      var user = {
-      	googleId: profile.id,
-      	accessToken: accessToken,
-      	displaName: profile.displayName,
-      	name: profile.name
-      }
-      return cb(null, user);
+     // do mongo stuff here : 
+      User.findOneAndUpdate({
+      		googleId: profile.id,
+      		displayName: profile.displayName,
+      		accessToken: accessToken
+       }, 
+      	{
+      		upsert: true,
+      		new: true,
+      		setDefaultOnInsert: true
+      	}, function(err, user){
+      		if(err){
+      			console.log('error: ', err);
+      		} else {
+      			console.log('user:', user);
+      			return done(user);
+      		}
+      	});
+  })
+);
 
-    // User.findOrCreate({ googleId: profile.id }, function (err, user) {
-    //   return cb(err, user);
-    // });
-  }
-));
-
+// we call this endopoint in frontend action with our login button
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile'] }));
 
@@ -197,23 +239,6 @@ app.get('/auth/google/callback',
     res.cookie('accessToken', req.user.accessToken, {expires:0, httpOnly: true });
     res.redirect('/'); //back to GameBoard 
   });
-
-
-//STEP 3: Use BearerStrategy 
-/*
-this is separate from above. we need to tight them together
-we need to match the endpoints or 
-*/
-passport.use(new BearerStrategy(
-  function(token, done) {
-  	if(token == 12345){
-  		var user = {user: 'yoli'};
-  		return done(null, user, {scope: 'read'});
-  	} else {
-  		return done(null, false);
-  	}
-  }
-));
 
 app.get('/profile', 
   passport.authenticate('bearer', { session: false }),

@@ -51,9 +51,11 @@ var GameBoard = React.createClass({
 		this.props.dispatch(actions.fetchWord(guessWord));
 	},
 	render: function(){
+		console.log('access token', document.cookie );
 		console.log(this.props);
-		return (
+		return ( 
 			<div className="gameBoard-wrapper">
+			<div>{document.cookie == '' ? <LandingPage /> : 'we are logged in'}</div>
 			<div className="logout-wrapper">
 			 <button type="button" className="btn btn-warning">Log out</button>
 			</div>
@@ -73,6 +75,30 @@ var GameBoard = React.createClass({
 	}
 });
 
+// var App = React.createClass({
+// 	render: function(){
+// 		return (
+// 			<div>{document.cookie == '' ? <LandingPage /> : <GameBoard/>}</div>
+// 		)
+// 	}
+// });
+// var App = React.createClass({
+// 	componentWillMount: function(){
+// 		//TODO: Test by passing a counter in the reducer
+// 		//Dispatch an action that simply changes the counterVal
+// 		console.log('componentWillMount')
+// 		this.props.dispatch(actions.fetchWord());	
+// 	},
+// 	onFormSubmit(guessWord){
+// 		this.props.dispatch(actions.fetchWord(guessWord));
+// 	},
+// 	render: function({
+// 		return (
+// 			{ document.cookie == '' ? <LandingPage /> : <GameBoard onFormSubmit={this.onFormSubmit} wordToGuessNext={this.props.wordToGuessNext} /> };
+// 		);
+// 	});
+// })
+
 var mapStateToProps = function(state, props){
 	// console.log('showing inside of mapStateToProps! ');
 	return {
@@ -81,23 +107,26 @@ var mapStateToProps = function(state, props){
 };
 
 var Container = connect(mapStateToProps)(GameBoard);
+// var Container = connect(mapStateToProps)(App);
+
 
 // Create an enhanced history that syncs navigation events with the store
 // var history = syncHistoryWithStore(hashHistory, store)
 
-var routes = (
-    <Router history={hashHistory}>
-        <Route path="/" component={LandingPage}>
-        </Route>
-        <Route path="/gameBoard" component={GameBoard}>
-        </Route>
-    </Router>
-);
+// var routes = (
+//     <Router history={hashHistory}>
+//         <Route path="/" component={LandingPage}>
+//         </Route>
+//         <Route path="/gameBoard" component={GameBoard}>
+//         </Route>
+//     </Router>
+// );
 
 document.addEventListener('DOMContentLoaded', function() {
     ReactDOM.render(
 			<Provider store={store}>
 		    	<Container />
+
 	  		</Provider>,
     	document.getElementById('app'));
 });
