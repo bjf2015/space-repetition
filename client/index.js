@@ -41,10 +41,10 @@ var App = React.createClass({
 	},
 	render: function () {
 		//<LandingPage LogIn={this.LogIn} />
-		console.log('document.cookie', document.cookie);
+		console.log('document.cookie', document);
 		return (
 				<div>hola
-		<div>{document.cookie == '' ? <LandingPage /> : 'document.cookie' }</div>
+		<div>{document.cookie == '' ? <LandingPage /> : <GameBoard /> }</div>
 		</div>
 
 		)

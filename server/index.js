@@ -243,6 +243,7 @@ passport.use(new BearerStrategy(
   			}
   			return done(null, user, { scope: ['https://www.googleapis.com/auth/plus.login']});
   		});
+
   	// if(token == 12345){
   	// 	var user = {user: 'Bryan'};
   	// 	return done(null, user, {scope: 'read'});
@@ -310,7 +311,7 @@ app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile'] }));
 
 app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/items', session: false }),
+  passport.authenticate('google', { failureRedirect: '/login', session: false }),
   function(req, res) {
     // Successful authentication, redirect home.
     res.cookie('accessToken', req.user.accessToken, {expires:0, httpOnly: true });
@@ -318,7 +319,7 @@ app.get('/auth/google/callback',
   });
 
 app.get('/profile', 
-  passport.authenticate('bearer', { session: false }),
+  passport.authenticate('bearer', { failureRedirect: '/', session: false }),
   function(req, res) {
     res.json(req.user);
  });
