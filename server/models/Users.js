@@ -20,4 +20,4 @@ module.exports = User;
       	accessToken: accessToken,
       	displayName: profile.displayName,
       	name: profile.name
-      	*/g
+      	*/

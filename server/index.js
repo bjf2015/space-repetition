@@ -116,7 +116,7 @@ app.put('/questions/:id', bodyParser.json(), function(req, res){
 
 // app.get('/nextq')
 // 
-// app.put('/questions/:id', bodyParser.json(), function(req, res) {
+app.put('/questions/:id', bodyParser.json(), function(req, res) {
     console.log(req.body.english);
     // fod find , get the right andster
     Question.findOne({
