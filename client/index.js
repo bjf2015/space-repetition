@@ -21,16 +21,33 @@ var actions = require('./actions/actions');
 //external components ------------------
 var Form = require('./components/form-component.js');
 var LandingPage = require('./components/landing-page-component.js');
+var GameBoard = require('./components/game-board-component.js');
 
 // Components --------------------------
 
 var App = React.createClass({
+	componentWillMount: function(){
+		//TODO get the first word showing
+		
+	},
+	onFormSubmit(guessWord){
+			console.log('clicked on Form');
+	},
+	nextWord: function(){
+		console.log('nextWord');
+		//TODO: CONNECCT REDUCER
+		
+		//CONNECT BACKEND
+	},
 	render: function () {
 		//<LandingPage LogIn={this.LogIn} />
+		console.log('document.cookie', document.cookie);
 		return (
-			<LandingPage />
+				<div>hola
+		<div>{document.cookie == '' ? <LandingPage /> : 'document.cookie' }</div>
+		</div>
 
-		);
+		)
 	}
 });
 
@@ -50,3 +67,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	  		</Provider>,
     	document.getElementById('app'));
 });
+		// <div>{document.cookie == '' ? <LandingPage /> : console.log("document.cookie", document.cookie);}</div>
+
+

@@ -11,6 +11,19 @@ var req = require('request');
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 var BearerStrategy = require('passport-http-bearer').Strategy;
 
+// mongoose.connect('mongodb://localhost:27017/space-repetition-dev');
+
+// var users = mongoose.model('Users', { name: String });
+
+// var kitty = new User({ googleId: '123445312' });
+// kitty.save(function (err) {
+// 	console.log('success kitty');
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log('meow');
+//   }
+// });
 
 // Question.create({spanish: 'amigo', english: 'friend' }, function(err, question) {
 // 	console.log(question);
@@ -247,24 +260,48 @@ passport.use(new GoogleStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
   	console.log('=========', accessToken, profile);
-     // do mongo stuff here : 
-      User.findOneAndUpdate({
-      		googleId: profile.id,
-      		displayName: profile.displayName,
-      		accessToken: accessToken
-       }, 
-      	{
-      		upsert: true,
-      		new: true,
-      		setDefaultOnInsert: true
-      	}, function(err, user){
+  	console.log('User', User);
+     // do mongo stuff here :
+     //User.db.listCollections() 
+     User.findOneAndUpdate(
+     	{googleId: profile.id},
+	    {$set: {
+	    	displayName: profile.displayName, 
+	    	accessToken: accessToken}
+	    },
+	    {	upsert:true, 
+	    	returnNewDocument:true
+	    },
+	    function(err, user){
       		if(err){
       			console.log('error: ', err);
       		} else {
-      			console.log('user:', user);
-      			return done(user);
-      		}
-      	});
+      			console.log('displayName:', user);
+      			return done(null, user);
+      		}}
+     );
+  //     User.findOneAndUpdate(
+
+		// {
+  //     		googleId: profile.id
+  //      }, 
+  //     {
+  //     		googleId: profile.id,
+  //     		displayName: profile.displayName,
+  //     		accessToken: accessToken
+  //      }, 
+  //     	{
+  //     		upsert: true,
+  //     		//new: true,
+  //     		setDefaultOnInsert: true
+  //     	}, function(err, user){
+  //     		if(err){
+  //     			console.log('error: ', err);
+  //     		} else {
+  //     			console.log('displayName:', user);
+  //     			return done(null, user);
+  //     		}
+  //     	});
   })
 );
 
@@ -273,7 +310,7 @@ app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile'] }));
 
 app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login', session: false }),
+  passport.authenticate('google', { failureRedirect: '/items', session: false }),
   function(req, res) {
     // Successful authentication, redirect home.
     res.cookie('accessToken', req.user.accessToken, {expires:0, httpOnly: true });
