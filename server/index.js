@@ -4,7 +4,14 @@ var mongoose = require('mongoose');
 var config = require('./config');
 var Question = require('./models/Question');
 var app = express();
-var user = reqquire('./models/User');
+var passport = require('passport');
+var User = require('./models/Users');
+
+var GoogleStrategy = require('passport-google-oauth20').Strategy;
+var BearerStrategy = require('passport-http-bearer').Strategy;
+
+/*Google Strategy*/
+
 
 // Question.create({spanish: 'amigo', english: 'friend' }, function(err, question) {
 // 	console.log(question);
@@ -28,7 +35,7 @@ var Storage = {
 
 var createStorage = function() {
 	var storage = Object.create(Storage);
-	storage.items = [];
+	storage.items = ['nada'];
 	storage.setId = 1;
 	return storage;
 }
@@ -73,90 +80,82 @@ app.get('/questions', function(req, res) {
 			return res.status(500).json({message: 'Internal Server Error'
 			                            });
 		}
-		
-		// res.json(questions[counter].spanish);
-		res.json(questions);
+		var spanishWord = questions[counter].spanish + counter;
+		var id = questions[counter]._id;
+		res.json({
+			question : spanishWord,
+			id : id 
+		}); //counter is just for testing
+		// res.json(questions);
 		
 		counter++;
-		// console.log('counter value: ',counter);
+		console.log('counter value: ',counter);
 	});
 });
-var completedQuestions = [];
+
 app.put('/questions/:id', bodyParser.json(), function(req, res){
 		console.log(req.body.english );
 	// fod find , get the right andster
 	Question.findOne({_id: req.params.id}, function(err, question){
 		//(question);
 		var newBucket;
-		if(req.body.english === question.english && newBucket === 'z') {
+		if(req.body.english === question.english){
 			newBucket = "c";
-		} else if(req.body.english !== question.english && newBucket === 'z')
+		} else {
 			newBucket = "a";
-		} else if(req.body.english === question.english && newBucket === 'a') {
-			newBucket = "b";
-		} else if(req.body.english !== question.english && newBucket === 'a') {
-			newBucket = "a";
-		} else if(req.body.english === question.english && newBucket === 'b') {
-			newBucket = "c"; 
-		} else if(req.body.english !== question.english && newBucket === 'b') {
-			newBucket = "a";
-		} else if(req.body.english === question.english && newBucket === 'c') {
-			completedQuestions.push(question);
-		} else alert("Congratulations!! You have finsished all the queesions");
-
+		}
 		   Question.findOneAndUpdate({_id: req.params.id}, 
 		   	{bucket: newBucket}, function(err, q) {
 		  				res.json({ question: q});
-		}
-	}
 		       
-});
-	
-app.post('/users/:id', bodyParser.json(), function(req, res){
-User.findOne({ displayName: req.body.displayName }, (findErr, existingUs) => 
-	{ if (existingUser) { return res.status(409).json({ message: 'This displayName has been registered already!'}); }
-	return user.save((saveErr) => {
-  if (saveErr) return next(saveErr);
-
-
-
-
+		       
+		   });
 	});	
 
-
-
-	// Question.findOneAndUpdate({ _id: req.params.id }, function (err, question){
-	// 	console.log('find one?');
-	//   question.bucket = 'c';
-	//   //question.visits.$inc();
-	//   question.save();
-	//   res.json({message: 'hey'});
-	// });
-		// Question.update(
-		// 	{_id: req.params.id},
-		// 	{bucket: 'c'}
-		// 	,{},
-		// 	function(err, question){
-		// 		// add error handling
-		// 		console.log('it saved: ', question);
-		// 		res.json({question: question}); // next question?
-		// })
-
-
-	// Question.find(function(err, questions){	
-	// 	if (err) {
-	// 		return res.status(500).json({message: 'Internal Server Error'
-	// 		                            });
-	// 	}
-	// 	if(Question[counter].english == req.params.answer){
-	// 		res.json('Good Job!');
-	// 	} else {
-	// 		res.json('Keep trying!');
-	// 	}
-	// });
 });
 
 // app.get('/nextq')
+// 
+// app.put('/questions/:id', bodyParser.json(), function(req, res) {
+    console.log(req.body.english);
+    // fod find , get the right andster
+    Question.findOne({
+        _id: req.params.id
+    }, function(err, question) {
+        (question);
+        var newBucket;
+        if (req.body.english === question.english && newBucket === 'z') {
+            newBucket = "c";
+        } else if (req.body.english !== question.english && newBucket === 'z') {
+            newBucket = "a";
+        } else if (req.body.english === question.english && newBucket === 'a') {
+            newBucket = "b";
+        } else if (req.body.english !== question.english && newBucket === 'a') {
+            newBucket = "a";
+        } else if (req.body.english === question.english && newBucket === 'b') {
+            newBucket = "c";
+        } else if (req.body.english !== question.english && newBucket === 'b') {
+            newBucket = "a";
+        } else if (req.body.english !== question.english && newBucket === 'c') {
+            newBucket = 'b';
+        } else if (req.body.english === question.english && newBucket === 'c') {
+            completedQuestions.push(question);
+        } else {
+            alert("Congratulations!! You have finsished all the queesions");
+        }
+
+        Question.findOneAndUpdate({
+                _id: req.params.id
+            }, {
+                bucket: newBucket
+            }, function(err, q) {
+                res.json({
+                    question: q
+                });
+            }
+        );
+    });
+});
 
 app.get('/users', function (req, res) {
 	res.send('Yoli\n');
@@ -196,6 +195,97 @@ if (require.main === module) {
 		}
 	});
 };
+
+// /*Google Strategy*/
+
+// //STEP 1
+// app.get('/public', function(req, res){
+// 	res.json({
+// 		message: 'google strategy'
+// 	})
+// })
+
+// //STEP 3: Use BearerStrategy 
+// /*
+// this is separate from above. we need to tight them together
+// we need to match the endpoints or 
+// Verify with google only once 
+// */
+// passport.serializeUser(function(user, done){
+// 	done(null, user);
+// });
+
+// // passport.deserializeUser(function(user,done){
+// // 	done(null, user);
+// // });
+
+// passport.use(new BearerStrategy(
+//   function(token, done) {
+//   	User.findOne({ accessToken: token},
+//   		function(err, user){
+//   			if(err){
+//   				return done(err)
+//   			}
+//   			if(!user) {
+//   				return done(null, false);
+//   			}
+//   			return done(null, user, { scope: ['https://www.googleapis.com/auth/plus.login']});
+//   		});
+//   	// if(token == 12345){
+//   	// 	var user = {user: 'Bryan'};
+//   	// 	return done(null, user, {scope: 'read'});
+//   	// } else {
+//   	// 	return done(null, false);
+//   	// }
+//   }
+// ));
+
+// //STEP 2
+// passport.use(new GoogleStrategy({
+//     clientID: "194268723918-d6l5f777ulrhkisikenk6oj73ilhen8i.apps.googleusercontent.com",
+//     clientSecret: "i1WcRbasimAwIr8ZGpz4r6u8",
+//     callbackURL: "http://localhost:3000/auth/google/callback"
+//   },
+//   function(accessToken, refreshToken, profile, done) {
+//   	console.log('=========', accessToken, profile);
+//      // do mongo stuff here : 
+//       User.findOneAndUpdate({
+//       		googleId: profile.id,
+//       		displayName: profile.displayName,
+//       		accessToken: accessToken
+//        }, 
+//       	{
+//       		upsert: true,
+//       		new: true,
+//       		setDefaultOnInsert: true
+//       	}, function(err, user){
+//       		if(err){
+//       			console.log('error: ', err);
+//       		} else {
+//       			console.log('user:', user);
+//       			return done(user);
+//       		}
+//       	});
+//   })
+// );
+
+// // we call this endopoint in frontend action with our login button
+// app.get('/auth/google',
+//   passport.authenticate('google', { scope: ['profile'] }));
+
+// app.get('/auth/google/callback', 
+//   passport.authenticate('google', { failureRedirect: '/login', session: false }),
+//   function(req, res) {
+//     // Successful authentication, redirect home.
+//     res.cookie('accessToken', req.user.accessToken, {expires:0, httpOnly: true });
+//     res.redirect('/'); //back to GameBoard 
+//   });
+
+// app.get('/profile', 
+//   passport.authenticate('bearer', { session: false }),
+//   function(req, res) {
+//     res.json(req.user);
+//  });
 
 exports.app = app;
 exports.runServer = runServer;
