@@ -31,6 +31,7 @@
   "homepage": "https://github.com/yolixtly/space-repetition#readme",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "cors": "^2.8.1",
     "express": "^4.14.0",
     "isomorphic-fetch": "^2.2.1",
     "mongodb": "^2.2.10",
@@ -46,7 +47,8 @@
     "react-router": "^2.8.1",
     "react-router-redux": "^4.0.6",
     "redux": "^3.6.0",
-    "redux-thunk": "^2.1.0"
+    "redux-thunk": "^2.1.0",
+    "request": "^2.75.0"
   },
   "devDependencies": {
     "babel-core": "^6.11.4",

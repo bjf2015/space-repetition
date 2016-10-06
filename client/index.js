@@ -24,88 +24,23 @@ var LandingPage = require('./components/landing-page-component.js');
 
 // Components --------------------------
 
-var GameBoard = React.createClass({
-	componentWillMount: function(){
-		//TODO: Test by passing a counter in the reducer
-		//Dispatch an action that simply changes the counterVal
-		console.log('componentWillMount')
-		this.props.dispatch(actions.fetchWord());	
-	},
-	onFormSubmit(guessWord){
-		this.props.dispatch(actions.fetchWord(guessWord));
-	},
-	render: function(){
-		console.log('access token', document.cookie );
-		console.log(this.props);
-		return ( 
-			<div className="gameBoard-wrapper">
-			<div>{document.cookie == '' ? <LandingPage /> : 'we are logged in'}</div>
-			<div className="logout-wrapper">
-			 <button type="button" className="btn btn-warning">Log out</button>
-			</div>
-			<h1>Spanish Level 1</h1>
-			<div className="container">
-				<div className="row">
+var App = React.createClass({
+	render: function () {
+		//<LandingPage LogIn={this.LogIn} />
+		return (
+			<LandingPage />
 
-					<h3>{this.props.wordToGuessNext}</h3>
-				</div>
-			</div>
-			<Form onFormSubmit={this.onFormSubmit}/>
-			<div className="score-wrapper">
-				<h3>Score:<span>10</span></h3>
-			</div>
-			</div>
-		)
+		);
 	}
 });
 
-// var GameBoardContainer = connect()(GameBoard);
-// var App = React.createClass({
-// 	render: function(){
-// 		return (
-// 			<div>{document.cookie == '' ? <LandingPage /> : <GameBoard/>}</div>
-// 		)
-// 	}
-// });
-// var App = React.createClass({
-// 	componentWillMount: function(){
-// 		//TODO: Test by passing a counter in the reducer
-// 		//Dispatch an action that simply changes the counterVal
-// 		console.log('componentWillMount')
-// 		this.props.dispatch(actions.fetchWord());	
-// 	},
-// 	onFormSubmit(guessWord){
-// 		this.props.dispatch(actions.fetchWord(guessWord));
-// 	},
-// 	render: function({
-// 		return (
-// 			{ document.cookie == '' ? <LandingPage /> : <GameBoardContainer/> };
-// 		);
-// 	});
-// })
-
 var mapStateToProps = function(state, props){
-	// console.log('showing inside of mapStateToProps! ');
 	return {
-		wordToGuessNext : state.wordToGuess
+		loginTest : state.loginTestReducer
 	};
 };
 
-var Container = connect(mapStateToProps)(GameBoard);
-// var Container = connect(mapStateToProps)(App);
-
-
-// Create an enhanced history that syncs navigation events with the store
-// var history = syncHistoryWithStore(hashHistory, store)
-
-// var routes = (
-//     <Router history={hashHistory}>
-//         <Route path="/" component={LandingPage}>
-//         </Route>
-//         <Route path="/gameBoard" component={GameBoard}>
-//         </Route>
-//     </Router>
-// );
+var Container = connect(mapStateToProps)(App);
 
 document.addEventListener('DOMContentLoaded', function() {
     ReactDOM.render(

@@ -2,12 +2,16 @@ var actions = require('../actions/actions');
 var update = require('react-addons-update');
 
 var initialState = {
-	wordToGuess : "Hello from Reducer",
-	id : null
+	loginTestReducer : "Hello From reducer"
 };
 
 var reducerCreator = function(state, action){
 	state = state || initialState;
+
+	if(action.type === actions.LOGIN_GOOGLE_SUCCESS){
+		console.log("Success loginin with Google");
+		// console.log(document.cookie);
+	}
 
 
 	if(action.type === actions.FETCH_WORD_SUCCESS){

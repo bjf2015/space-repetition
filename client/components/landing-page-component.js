@@ -11,7 +11,8 @@ var LandingPage = React.createClass({
 				<p>This online spanish Center, offers space repetition technique to learn new words in Spanish. Log in to start Playing!</p>
 			</div>
 			<div className="login-wrapper col-xs-6 col-xs-offset-3">
-				<button type="button" className="btn btn-warning">Login</button>
+
+				<button type="button" className="btn btn-warning"><a href="/auth/google"> login </a></button>
 			</div>
 		</div>
 		)
