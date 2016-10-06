@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var config = require('./config');
 var Question = require('./models/Question');
 var app = express();
+var user = reqquire('./models/User');
 
 // Question.create({spanish: 'amigo', english: 'friend' }, function(err, question) {
 // 	console.log(question);
@@ -80,7 +81,7 @@ app.get('/questions', function(req, res) {
 		// console.log('counter value: ',counter);
 	});
 });
-
+var completedQuestions = [];
 app.put('/questions/:id', bodyParser.json(), function(req, res){
 		console.log(req.body.english );
 	// fod find , get the right andster
@@ -89,31 +90,40 @@ app.put('/questions/:id', bodyParser.json(), function(req, res){
 		var newBucket;
 		if(req.body.english === question.english && newBucket === 'z') {
 			newBucket = "c";
-		} else {
+		} else if(req.body.english !== question.english && newBucket === 'z')
 			newBucket = "a";
-		}
-		if(req.body.english === question.english && newBucket === 'a') {
+		} else if(req.body.english === question.english && newBucket === 'a') {
 			newBucket = "b";
-		} else {
+		} else if(req.body.english !== question.english && newBucket === 'a') {
 			newBucket = "a";
-		}
-		if(req.body.english === question.english && newBucket === 'b') {
-			newBucket = "c";
-		} else {
+		} else if(req.body.english === question.english && newBucket === 'b') {
+			newBucket = "c"; 
+		} else if(req.body.english !== question.english && newBucket === 'b') {
 			newBucket = "a";
-		}
-		if(req.body.english === question.english && newBucket === 'c') {
-			newBucket = "c";
-		} else {
-			newBucket = "b";
-		}
+		} else if(req.body.english === question.english && newBucket === 'c') {
+			completedQuestions.push(question);
+		} else alert("Congratulations!! You have finsished all the queesions");
+
 		   Question.findOneAndUpdate({_id: req.params.id}, 
 		   	{bucket: newBucket}, function(err, q) {
 		  				res.json({ question: q});
+		}
+	}
 		       
-		       
-		   });
+});
+	
+app.post('/users/:id', bodyParser.json(), function(req, res){
+User.findOne({ displayName: req.body.displayName }, (findErr, existingUs) => 
+	{ if (existingUser) { return res.status(409).json({ message: 'This displayName has been registered already!'}); }
+	return user.save((saveErr) => {
+  if (saveErr) return next(saveErr);
+
+
+
+
 	});	
+
+
 
 	// Question.findOneAndUpdate({ _id: req.params.id }, function (err, question){
 	// 	console.log('find one?');
