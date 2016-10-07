@@ -314,7 +314,7 @@ app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login', session: false }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.cookie('accessToken', req.user.accessToken, {expires:0, httpOnly: true });
+    res.cookie('accessToken', req.user.accessToken, {expires:0 });
     res.redirect('/'); //back to GameBoard 
   });
 
