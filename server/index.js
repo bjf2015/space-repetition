@@ -11,23 +11,6 @@ var req = require('request');
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 var BearerStrategy = require('passport-http-bearer').Strategy;
 
-// mongoose.connect('mongodb://localhost:27017/space-repetition-dev');
-
-// var users = mongoose.model('Users', { name: String });
-
-// var kitty = new User({ googleId: '123445312' });
-// kitty.save(function (err) {
-// 	console.log('success kitty');
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log('meow');
-//   }
-// });
-
-// Question.create({spanish: 'amigo', english: 'friend' }, function(err, question) {
-// 	console.log(question);
-// });
 
 Question.find({}, function(error, questions) {
 	console.log(questions);
@@ -81,9 +64,6 @@ app.post('/items', bodyParser, function(request, response) {
 	response.status(201).json(item);
 });
 
-// app.get('/', function (req, res) {
-// 	res.send('Hello World!\n');
-// });
 
 //store the question where the user left it! CurrentQuestion prop needed in User squema
 app.get('/questions', function(req, res) {
@@ -92,17 +72,6 @@ app.get('/questions', function(req, res) {
 			return res.status(500).json({message: 'Internal Server Error'
 			                            });
 		}
-
-		// var spanishWord = 'All questions answered!';
-		// var	id = null;
-
-		// for(var i= 0; i < questions.length; i++) {
-		// 	if (questions[i].bucket != "c") {
-		// 		spanishWord =  questions[i].spanish;
-		// 		id = questions[i]._id;
-		// 	}//
-
-		// }
 			console.log(question);
 			res.json({
 			question : question ? question.spanish : 'All questions answered!',
@@ -132,49 +101,6 @@ app.put('/questions/:id', bodyParser.json(), function(req, res){
 
 });
 
-// app.get('/nextq')
-// 
-// app.put('/questions/:id', bodyParser.json(), function(req, res) {
-//     console.log(req.body.english);
-//     // fod find , get the right andster
-//     Question.findOne({
-//         _id: req.params.id
-//     }, function(err, question) {
-//         (question);
-//         var newBucket;
-//         if (req.body.english === question.english && newBucket === 'z') {
-//             newBucket = "c";
-//         } else if (req.body.english !== question.english && newBucket === 'z') {
-//             newBucket = "a";
-//         } else if (req.body.english === question.english && newBucket === 'a') {
-//             newBucket = "b";
-//         } else if (req.body.english !== question.english && newBucket === 'a') {
-//             newBucket = "a";
-//         } else if (req.body.english === question.english && newBucket === 'b') {
-//             newBucket = "c";
-//         } else if (req.body.english !== question.english && newBucket === 'b') {
-//             newBucket = "a";
-//         } else if (req.body.english !== question.english && newBucket === 'c') {
-//             newBucket = 'b';
-//         } else if (req.body.english === question.english && newBucket === 'c') {
-//             completedQuestions.push(question);
-//         } else {
-//             alert("Congratulations!! You have finsished all the queesions");
-//         }
-
-//         Question.findOneAndUpdate({
-//                 _id: req.params.id
-//             }, {
-//                 bucket: newBucket
-//             }, function(err, q) {
-//                 res.json({
-//                     question: q
-//                 });
-//             }
-//         );
-//     });
-// });
-
 app.get('/users', function (req, res) {
 	res.send('Yoli\n');
 });
@@ -186,10 +112,6 @@ app.post('/quotes', (req, res) => {
 app.post('/question', function (req, res) {
 	res.end('Connection Closed\n\n');
 });
-
-// app.get('/gamebaord', function (res, reg) {
-// 	res.send(__dirname, '/index.js')
-// }) #TODO
 
 var runServer = function(callback) {
 	mongoose.connect(config.DATABASE_URL, function(err) {
@@ -249,13 +171,6 @@ passport.use(new BearerStrategy(
   			}
   			return done(null, user, { scope: ['https://www.googleapis.com/auth/plus.login']});
   		});
-
-  	// if(token == 12345){
-  	// 	var user = {user: 'Bryan'};
-  	// 	return done(null, user, {scope: 'read'});
-  	// } else {
-  	// 	return done(null, false);
-  	// }
   }
 ));
 
@@ -268,8 +183,7 @@ passport.use(new GoogleStrategy({
   function(accessToken, refreshToken, profile, done) {
   	console.log('=========', accessToken, profile);
   	console.log('User', User);
-     // do mongo stuff here :
-     //User.db.listCollections() 
+
      User.findOneAndUpdate(
      	{googleId: profile.id},
 	    {$set: {
@@ -310,11 +224,3 @@ app.get('/profile',
 
 exports.app = app;
 exports.runServer = runServer;
-
-/*
- google Auth - login button (APi)
- Provided term - h3 tag (Get)
- User Answer - input form (post)
- Score : - <span> (get)
- Logout buttn - (api)
- */

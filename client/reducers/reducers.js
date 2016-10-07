@@ -2,7 +2,7 @@ var actions = require('../actions/actions');
 var update = require('react-addons-update');
 
 var initialState = {
-	wordToGuess : "Hello From reducer",
+	wordToGuess : "",
 	currentId: "",
 	feedback: "Good Luck!!!",
 	score: 0 
@@ -34,17 +34,13 @@ var reducerCreator = function(state, action){
 	if(action.type === actions.FETCH_WORD_SUCCESS){
 		console.log('=======================');
 		console.log('FETCH_WORD_SUCCESS');
-		// console.log('current word:', action.data);
-
 		var newState = update(state, {
 		 	wordToGuess : {$set : action.data.question},	
-		 	currentId : {$set : action.data.id}	//modify question and id for the actual variables from database mongoose
+		 	currentId : {$set : action.data.id}	
 		 	 
 		 });
-		// console.log(action);
-		// console.log('newState:', newState);
+
 		return newState;
-		// return 'testing it!';
 
 
 	} else if(action.type === actions.FETCH_WORD_ERROR){

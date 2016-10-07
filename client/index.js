@@ -27,21 +27,14 @@ var GameBoard = require('./components/game-board-component.js');
 
 var App = React.createClass({
 	componentWillMount: function(){
-		//TODO get the first word showing
 		this.props.dispatch(actions.fetchWord());
 	},
 	onFormSubmit(guessWord){
 			console.log('clicked on Form', guessWord);
-			// var guessWord = this.props.wordTest;
 			console.log('guessWord: ', guessWord);
 			var currentId = this.props.currentId;
-			//Renders the next question: 
-			// this.props.dispatch(actions.fetchWord());
-			// var currentId = this.props.currentId;
 			console.log('id to validate question: ', currentId);
 			console.log('word fixed to id: ', this.props.wordToGuessNext);
-			// console.log('accessToken:', document.cookie);
-			//Renders feedback and #TODO: score
 			this.props.dispatch(actions.feedbackWord(currentId, guessWord));
 			this.props.dispatch(actions.fetchWord()); // this is async, needs to be called afte feedback
 
@@ -50,12 +43,9 @@ var App = React.createClass({
 	hotdog: function(){
 		console.log('nextWord');
 		this.props.dispatch(actions.fetchWord());
-		//TODO: CONNECCT REDUCER
-		//CONNECT BACKEND
+
 	},
 	render: function () {
-		//<LandingPage LogIn={this.LogIn} />
-		// console.log('document.cookie', document);
 		return (
 			<div>
 			<div>{ (document.cookie == "") ? <LandingPage /> :<GameBoard score={this.props.score} feedback={this.props.feedback} wordToGuessNext={this.props.wordToGuessNext} onFormSubmit={this.onFormSubmit} />}</div>
@@ -82,12 +72,4 @@ document.addEventListener('DOMContentLoaded', function() {
 		</Provider>,
     	document.getElementById('app'));
 });
-		//<div>{document.cookie == '' ? <LandingPage /> : console.log("document.cookie", document.cookie);}</div>
-		//<div>{document.cookie == '' ? "not Authorized" : "Authorized" }</div>
-
-/*
- 				<div>hola
-				<GameBoard wordToGuess={this.onFormSubmit()}/>
-				<Form onFormSubmit={this.onFormSubmit}/>
- */
 
