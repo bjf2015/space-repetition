@@ -32,8 +32,17 @@ var App = React.createClass({
 	},
 	onFormSubmit(guessWord){
 			console.log('clicked on Form', guessWord);
-			var guessWord = this.props.wordTest;
+			// var guessWord = this.props.wordTest;
+			console.log('guessWord: ', guessWord);
+
+			//Renders the next question: 
 			this.props.dispatch(actions.fetchWord(guessWord));
+			var currentId = this.props.currentId;
+			console.log('id to validate question: ', currentId);
+			console.log('word fixed to id: ', this.props.wordToGuessNext);
+			// console.log('accessToken:', document.cookie);
+			//Renders feedback and #TODO: score
+			this.props.dispatch(actions.feedbackWord(currentId, guessWord))
 			return guessWord;
 	},
 	nextWord: function(){
@@ -43,7 +52,7 @@ var App = React.createClass({
 	},
 	render: function () {
 		//<LandingPage LogIn={this.LogIn} />
-		console.log('document.cookie', document);
+		// console.log('document.cookie', document);
 		return (
 			<div>{ (document.cookie == "") ? <LandingPage /> :<GameBoard wordToGuessNext={this.props.wordToGuessNext} onFormSubmit={this.onFormSubmit} />}</div>
 		)
@@ -52,7 +61,8 @@ var App = React.createClass({
 
 var mapStateToProps = function(state, props){
 	return {
-		wordToGuessNext : state.wordToGuess
+		wordToGuessNext : state.wordToGuess,
+		currentId : state.currentId
 	};
 };
 

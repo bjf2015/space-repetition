@@ -9,7 +9,7 @@ var Form = React.createClass({
 		event.preventDefault();
 		//Grabs the value from the input on submit
 		var guessWord = this.refs.theInput.value;
-		console.log('guessWord is:', guessWord);
+		// console.log('guessWord is:', guessWord);
 		//Dispatch a fetchWord action with the next index to display
 		this.props.onFormSubmit(guessWord);
 		//Clears the value on Submit

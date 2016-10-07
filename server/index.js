@@ -92,7 +92,7 @@ app.get('/questions', function(req, res) {
 			return res.status(500).json({message: 'Internal Server Error'
 			                            });
 		}
-		var spanishWord = questions[counter].spanish + counter;
+		var spanishWord = questions[counter].spanish;
 		var id = questions[counter]._id;
 		res.json({
 			question : spanishWord,
@@ -106,9 +106,10 @@ app.get('/questions', function(req, res) {
 });
 
 app.put('/questions/:id', bodyParser.json(), function(req, res){
-		console.log(req.body.english );
 	// fod find , get the right andster
 	Question.findOne({_id: req.params.id}, function(err, question){
+		console.log( "word from input : ", req.body.english );
+		console.log( "word from database : ", question.english );
 		//(question);
 		var newBucket;
 		if(req.body.english === question.english){
@@ -118,9 +119,7 @@ app.put('/questions/:id', bodyParser.json(), function(req, res){
 		}
 		   Question.findOneAndUpdate({_id: req.params.id}, 
 		   	{bucket: newBucket}, function(err, q) {
-		  				res.json({ question: q});
-		       
-		       
+		  				res.json({ question: q.bucket});
 		   });
 	});	
 
@@ -128,53 +127,53 @@ app.put('/questions/:id', bodyParser.json(), function(req, res){
 
 // app.get('/nextq')
 // 
-app.put('/questions/:id', bodyParser.json(), function(req, res) {
-    console.log(req.body.english);
-    // fod find , get the right andster
-    Question.findOne({
-        _id: req.params.id
-    }, function(err, question) {
-        (question);
-        var newBucket;
-        if (req.body.english === question.english && newBucket === 'z') {
-            newBucket = "c";
-        } else if (req.body.english !== question.english && newBucket === 'z') {
-            newBucket = "a";
-        } else if (req.body.english === question.english && newBucket === 'a') {
-            newBucket = "b";
-        } else if (req.body.english !== question.english && newBucket === 'a') {
-            newBucket = "a";
-        } else if (req.body.english === question.english && newBucket === 'b') {
-            newBucket = "c";
-        } else if (req.body.english !== question.english && newBucket === 'b') {
-            newBucket = "a";
-        } else if (req.body.english !== question.english && newBucket === 'c') {
-            newBucket = 'b';
-        } else if (req.body.english === question.english && newBucket === 'c') {
-            completedQuestions.push(question);
-        } else {
-            alert("Congratulations!! You have finsished all the queesions");
-        }
+// app.put('/questions/:id', bodyParser.json(), function(req, res) {
+//     console.log(req.body.english);
+//     // fod find , get the right andster
+//     Question.findOne({
+//         _id: req.params.id
+//     }, function(err, question) {
+//         (question);
+//         var newBucket;
+//         if (req.body.english === question.english && newBucket === 'z') {
+//             newBucket = "c";
+//         } else if (req.body.english !== question.english && newBucket === 'z') {
+//             newBucket = "a";
+//         } else if (req.body.english === question.english && newBucket === 'a') {
+//             newBucket = "b";
+//         } else if (req.body.english !== question.english && newBucket === 'a') {
+//             newBucket = "a";
+//         } else if (req.body.english === question.english && newBucket === 'b') {
+//             newBucket = "c";
+//         } else if (req.body.english !== question.english && newBucket === 'b') {
+//             newBucket = "a";
+//         } else if (req.body.english !== question.english && newBucket === 'c') {
+//             newBucket = 'b';
+//         } else if (req.body.english === question.english && newBucket === 'c') {
+//             completedQuestions.push(question);
+//         } else {
+//             alert("Congratulations!! You have finsished all the queesions");
+//         }
 
-        Question.findOneAndUpdate({
-                _id: req.params.id
-            }, {
-                bucket: newBucket
-            }, function(err, q) {
-                res.json({
-                    question: q
-                });
-            }
-        );
-    });
-});
+//         Question.findOneAndUpdate({
+//                 _id: req.params.id
+//             }, {
+//                 bucket: newBucket
+//             }, function(err, q) {
+//                 res.json({
+//                     question: q
+//                 });
+//             }
+//         );
+//     });
+// });
 
 app.get('/users', function (req, res) {
 	res.send('Yoli\n');
 });
 
 app.post('/quotes', (req, res) => {
-	res.send(req.body)
+	res.send(req.body);
 });
 
 app.post('/question', function (req, res) {
@@ -236,7 +235,7 @@ passport.use(new BearerStrategy(
   	User.findOne({ accessToken: token},
   		function(err, user){
   			if(err){
-  				return done(err)
+  				return done(err);
   			}
   			if(!user) {
   				return done(null, false);
@@ -281,28 +280,6 @@ passport.use(new GoogleStrategy({
       			return done(null, user);
       		}}
      );
-  //     User.findOneAndUpdate(
-
-		// {
-  //     		googleId: profile.id
-  //      }, 
-  //     {
-  //     		googleId: profile.id,
-  //     		displayName: profile.displayName,
-  //     		accessToken: accessToken
-  //      }, 
-  //     	{
-  //     		upsert: true,
-  //     		//new: true,
-  //     		setDefaultOnInsert: true
-  //     	}, function(err, user){
-  //     		if(err){
-  //     			console.log('error: ', err);
-  //     		} else {
-  //     			console.log('displayName:', user);
-  //     			return done(null, user);
-  //     		}
-  //     	});
   })
 );
 

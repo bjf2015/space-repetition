@@ -5,9 +5,10 @@
 var mongoose = require('mongoose');
 
 var QuestionSchema = new mongoose.Schema({
-	spanish: { type: String, required: true },
-	english: { type: String, required: true},
-	bucket: { type: String, default: 'z'}
+	spanish:  String, 
+	english: String, 
+	bucket: String
+	// bucket: { type: String, default: 'z'}
 });
 
 var Question = mongoose.model('Question', QuestionSchema);
