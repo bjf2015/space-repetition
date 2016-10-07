@@ -34,19 +34,22 @@ var App = React.createClass({
 			console.log('clicked on Form', guessWord);
 			// var guessWord = this.props.wordTest;
 			console.log('guessWord: ', guessWord);
-
-			//Renders the next question: 
-			this.props.dispatch(actions.fetchWord(guessWord));
 			var currentId = this.props.currentId;
+			//Renders the next question: 
+			this.props.dispatch(actions.fetchWord());
+			// var currentId = this.props.currentId;
 			console.log('id to validate question: ', currentId);
 			console.log('word fixed to id: ', this.props.wordToGuessNext);
 			// console.log('accessToken:', document.cookie);
 			//Renders feedback and #TODO: score
 			this.props.dispatch(actions.feedbackWord(currentId, guessWord))
+			//this.props.dispatch(actions.fetchWord());
+
 			return guessWord;
 	},
-	nextWord: function(){
+	hotdog: function(){
 		console.log('nextWord');
+		this.props.dispatch(actions.fetchWord());
 		//TODO: CONNECCT REDUCER
 		//CONNECT BACKEND
 	},
@@ -54,7 +57,11 @@ var App = React.createClass({
 		//<LandingPage LogIn={this.LogIn} />
 		// console.log('document.cookie', document);
 		return (
-			<div>{ (document.cookie == "") ? <LandingPage /> :<GameBoard wordToGuessNext={this.props.wordToGuessNext} onFormSubmit={this.onFormSubmit} />}</div>
+			<div>
+				<button onClick={this.hotdog}>Next button</button>
+			
+			<div>{ (document.cookie == "") ? <LandingPage /> :<GameBoard feedback={this.props.feedback} wordToGuessNext={this.props.wordToGuessNext} onFormSubmit={this.onFormSubmit} />}</div>
+			</div>
 		)
 	}
 });
@@ -62,7 +69,8 @@ var App = React.createClass({
 var mapStateToProps = function(state, props){
 	return {
 		wordToGuessNext : state.wordToGuess,
-		currentId : state.currentId
+		currentId : state.currentId,
+		feedback: state.feedback
 	};
 };
 

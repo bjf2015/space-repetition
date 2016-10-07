@@ -85,6 +85,7 @@ app.post('/items', bodyParser, function(request, response) {
 // 	res.send('Hello World!\n');
 // });
 
+//store the question where the user left it! CurrentQuestion prop needed in User squema
 var counter = 0;
 app.get('/questions', function(req, res) {
 	Question.find(function(err, questions) {
@@ -112,14 +113,14 @@ app.put('/questions/:id', bodyParser.json(), function(req, res){
 		console.log( "word from database : ", question.english );
 		//(question);
 		var newBucket;
-		if(req.body.english === question.english){
+		if(req.body.english == question.english){
 			newBucket = "c";
 		} else {
 			newBucket = "a";
 		}
 		   Question.findOneAndUpdate({_id: req.params.id}, 
-		   	{bucket: newBucket}, function(err, q) {
-		  				res.json({ question: q.bucket});
+		   	{bucket: newBucket}, {new: true}, function(err, q) {
+		  				res.json({ feedback: q.bucket});
 		   });
 	});	
 
