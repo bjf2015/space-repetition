@@ -85,50 +85,30 @@ app.post('/items', bodyParser, function(request, response) {
 // 	res.send('Hello World!\n');
 // });
 
-var c = [];
 //store the question where the user left it! CurrentQuestion prop needed in User squema
-var counter = 0;
 app.get('/questions', function(req, res) {
-	Question.find(function(err, questions) {
+	Question.findOne({bucket: { $ne: 'c'}}, function(err, question) {
 		if (err) {
 			return res.status(500).json({message: 'Internal Server Error'
 			                            });
 		}
-		
-		var spanishWord = questions[counter].spanish;
-		var	id = questions[counter]._id;
-	
-		c.push(spanishWord);		
-		// skip the correct questions
-		// if(questions[counter].bucket === "z"){
-		// 	spanishWord = questions[counter].spanish;
-		// 	id = questions[counter]._id;
-			
-		// 	res.json({
-		// 	question : spanishWord,
-		// 	id : id 
-		// 	}); 
-		// }
 
-		// if(questions[counter].bucket === "c"){
-		// 	counter++;
-		// 	spanishWord = questions[counter].spanish;
-		// 	id = questions[counter]._id;
-			
+		// var spanishWord = 'All questions answered!';
+		// var	id = null;
+
+		// for(var i= 0; i < questions.length; i++) {
+		// 	if (questions[i].bucket != "c") {
+		// 		spanishWord =  questions[i].spanish;
+		// 		id = questions[i]._id;
+		// 	}//
+
+		// }
+			console.log(question);
 			res.json({
-			question : spanishWord,
-			id : id 
+			question : question ? question.spanish : 'All questions answered!',
+			id : question ? question._id : 0
 			}); 
 		
-		
-		counter++;
-		//infinite game 
-		if(counter >= 10){
-			counter = 0;
-		}
-
-		console.log('array of correct qustions: ', c);
-		console.log('counter value: ', counter);
 	});
 });
 

@@ -36,14 +36,14 @@ var App = React.createClass({
 			console.log('guessWord: ', guessWord);
 			var currentId = this.props.currentId;
 			//Renders the next question: 
-			this.props.dispatch(actions.fetchWord());
+			// this.props.dispatch(actions.fetchWord());
 			// var currentId = this.props.currentId;
 			console.log('id to validate question: ', currentId);
 			console.log('word fixed to id: ', this.props.wordToGuessNext);
 			// console.log('accessToken:', document.cookie);
 			//Renders feedback and #TODO: score
-			this.props.dispatch(actions.feedbackWord(currentId, guessWord))
-			//this.props.dispatch(actions.fetchWord());
+			this.props.dispatch(actions.feedbackWord(currentId, guessWord));
+			this.props.dispatch(actions.fetchWord()); // this is async, needs to be called afte feedback
 
 			return guessWord;
 	},
