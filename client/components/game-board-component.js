@@ -22,7 +22,7 @@ var GameBoard = React.createClass({
 			<Form onFormSubmit={this.props.onFormSubmit}/>
 			<div className="score-wrapper">
 				<h4>Feedback: <span>{this.props.feedback}</span></h4>
-				<h3>Score: <span>10</span></h3>
+				<h3>Score: <span>{this.props.score}</span></h3>
 			</div>
 			</div>
 		)

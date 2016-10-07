@@ -60,7 +60,7 @@ var App = React.createClass({
 			<div>
 				<button onClick={this.hotdog}>Next button</button>
 			
-			<div>{ (document.cookie == "") ? <LandingPage /> :<GameBoard feedback={this.props.feedback} wordToGuessNext={this.props.wordToGuessNext} onFormSubmit={this.onFormSubmit} />}</div>
+			<div>{ (document.cookie == "") ? <LandingPage /> :<GameBoard score={this.props.score} feedback={this.props.feedback} wordToGuessNext={this.props.wordToGuessNext} onFormSubmit={this.onFormSubmit} />}</div>
 			</div>
 		)
 	}
@@ -70,7 +70,8 @@ var mapStateToProps = function(state, props){
 	return {
 		wordToGuessNext : state.wordToGuess,
 		currentId : state.currentId,
-		feedback: state.feedback
+		feedback: state.feedback,
+		score: state.score
 	};
 };
 

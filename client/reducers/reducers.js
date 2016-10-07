@@ -4,24 +4,28 @@ var update = require('react-addons-update');
 var initialState = {
 	wordToGuess : "Hello From reducer",
 	currentId: "",
-	feedback: "Good!!!"
+	feedback: "Good!!!",
+	score: 0 
 };
-
+var counter = 1;
 var reducerCreator = function(state, action){
 	state = state || initialState;
-
+	
 	if(action.type === actions.FEEDBACK_WORD_SUCCESS){
+		
 		console.log("Success fetching bucket update -> FEEDBACK_WORD_SUCCESS");
 		console.log(action.data);
 		if(action.data.feedback == "a"){
 			var newState = update(state, {
-		 	feedback:  {$set : "wrong answer"},	
+		 	feedback:  {$set : "wrong answer"},
+		 	score:  {$set : counter++ }		
 		 });
 			return newState;
 		}
 		else if(action.data.feedback == "c"){
 			var newState = update(state, {
-		 	feedback:  {$set : "correct answer"},	
+		 	feedback:  {$set : "correct answer"},
+		 	score:  {$set : counter++ }	
 		 });
 			return newState;
 		}
