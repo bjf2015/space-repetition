@@ -28,15 +28,18 @@ var GameBoard = require('./components/game-board-component.js');
 var App = React.createClass({
 	componentWillMount: function(){
 		//TODO get the first word showing
-		
 	},
 	onFormSubmit(guessWord){
-			console.log('clicked on Form');
+			console.log('clicked on Form', guessWord);
+			var guessWord = this.props.wordTest;
+			// this.props.dispatch(actions.fetchWord(guessWord));
+			// var wordToGuessNext = "hello g";
+			// return wordToGuessNext;
+			return guessWord;
 	},
 	nextWord: function(){
 		console.log('nextWord');
 		//TODO: CONNECCT REDUCER
-		
 		//CONNECT BACKEND
 	},
 	render: function () {
@@ -44,16 +47,18 @@ var App = React.createClass({
 		console.log('document.cookie', document);
 		return (
 				<div>hola
-		<div>{document.cookie == '' ? <LandingPage /> : <GameBoard /> }</div>
+				<GameBoard wordToGuess={this.onFormSubmit()}/>
+				<Form onFormSubmit={this.onFormSubmit}/>
 		</div>
 
 		)
 	}
 });
 
+
 var mapStateToProps = function(state, props){
 	return {
-		loginTest : state.loginTestReducer
+		wordTest : state.wordTestReducer
 	};
 };
 
@@ -61,12 +66,12 @@ var Container = connect(mapStateToProps)(App);
 
 document.addEventListener('DOMContentLoaded', function() {
     ReactDOM.render(
-			<Provider store={store}>
-		    	<Container />
-
-	  		</Provider>,
+		<Provider store={store}>
+			<Container />
+		</Provider>,
     	document.getElementById('app'));
 });
 		// <div>{document.cookie == '' ? <LandingPage /> : console.log("document.cookie", document.cookie);}</div>
+		//<div>{document.cookie == '' ? "not Authorized" : "Authorized" }</div>
 
 

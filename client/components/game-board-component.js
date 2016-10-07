@@ -14,6 +14,7 @@ var GameBoard = React.createClass({
 			<h1>Spanish Level 1</h1>
 			<div className="container">
 				<div className="row">
+		
 
 					<h3>{this.props.wordToGuessNext}</h3>
 				</div>

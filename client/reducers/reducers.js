@@ -12,10 +12,10 @@ var reducerCreator = function(state, action){
 		console.log("Success loginin with Google");
 		// console.log(document.cookie);
 	}
-
+	
 
 	if(action.type === actions.FETCH_WORD_SUCCESS){
-		// console.log('fetch success');
+		console.log('fetch success');
 		// console.log('current word:', action.data);
 
 		var newState = update(initialState, {

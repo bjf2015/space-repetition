@@ -98,7 +98,9 @@ var Container = connect(mapStateToProps)(GameBoard);
 // Create an enhanced history that syncs navigation events with the store
 // var history = syncHistoryWithStore(hashHistory, store)
 
-// var routes = (
+// var routes = 
+// 
+// (
 //     <Router history={hashHistory}>
 //         <Route path="/" component={LandingPage}>
 //         </Route>
