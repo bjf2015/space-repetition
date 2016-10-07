@@ -19,7 +19,7 @@ var GameBoard = React.createClass({
 					<h3>{this.props.wordToGuessNext}</h3>
 				</div>
 			</div>
-			<Form onFormSubmit={this.props.onFormSubmit}/>
+			<Form onFormSubmit={this.props.onFormSubmit} wordToGuessNext={this.props.wordToGuessNext}/>
 			<div className="score-wrapper">
 				<h4>Feedback: <span>{this.props.feedback}</span></h4>
 				<h3>Score: <span>{this.props.score}</span></h3>

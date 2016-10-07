@@ -4,7 +4,7 @@ var update = require('react-addons-update');
 var initialState = {
 	wordToGuess : "Hello From reducer",
 	currentId: "",
-	feedback: "Good!!!",
+	feedback: "Good Luck!!!",
 	score: 0 
 };
 var counter = 1;

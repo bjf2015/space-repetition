@@ -58,8 +58,6 @@ var App = React.createClass({
 		// console.log('document.cookie', document);
 		return (
 			<div>
-				<button onClick={this.hotdog}>Next button</button>
-			
 			<div>{ (document.cookie == "") ? <LandingPage /> :<GameBoard score={this.props.score} feedback={this.props.feedback} wordToGuessNext={this.props.wordToGuessNext} onFormSubmit={this.onFormSubmit} />}</div>
 			</div>
 		)

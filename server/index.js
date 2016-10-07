@@ -85,6 +85,7 @@ app.post('/items', bodyParser, function(request, response) {
 // 	res.send('Hello World!\n');
 // });
 
+var c = [];
 //store the question where the user left it! CurrentQuestion prop needed in User squema
 var counter = 0;
 app.get('/questions', function(req, res) {
@@ -93,16 +94,41 @@ app.get('/questions', function(req, res) {
 			return res.status(500).json({message: 'Internal Server Error'
 			                            });
 		}
+		
 		var spanishWord = questions[counter].spanish;
-		var id = questions[counter]._id;
-		res.json({
+		var	id = questions[counter]._id;
+	
+		c.push(spanishWord);		
+		// skip the correct questions
+		// if(questions[counter].bucket === "z"){
+		// 	spanishWord = questions[counter].spanish;
+		// 	id = questions[counter]._id;
+			
+		// 	res.json({
+		// 	question : spanishWord,
+		// 	id : id 
+		// 	}); 
+		// }
+
+		// if(questions[counter].bucket === "c"){
+		// 	counter++;
+		// 	spanishWord = questions[counter].spanish;
+		// 	id = questions[counter]._id;
+			
+			res.json({
 			question : spanishWord,
 			id : id 
-		}); //counter is just for testing
-		// res.json(questions);
+			}); 
+		
 		
 		counter++;
-		console.log('counter value: ',counter);
+		//infinite game 
+		if(counter >= 10){
+			counter = 0;
+		}
+
+		console.log('array of correct qustions: ', c);
+		console.log('counter value: ', counter);
 	});
 });
 

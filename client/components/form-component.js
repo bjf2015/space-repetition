@@ -21,7 +21,7 @@ var Form = React.createClass({
 				<div className="form-wrapper" className="container">
 				<div className="row">
 					<form onSubmit={this.onFormSubmit} className='input-group col-xs-6'>
-						<input placeholder='Guess the english word for fiesta'
+						<input placeholder='Guess the english word'
 						className="form-control" ref="theInput" />
 						<span className="input-group-btn">
 							<button type='submit' className="btn btn-secondary">Guess</button>
